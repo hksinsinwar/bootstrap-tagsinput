@@ -23,7 +23,20 @@
       $tag.hide().fadeIn();
     },
     trimValue: false,
-    allowDuplicates: false
+    allowDuplicates: false,
+    msgMaxReached:function(itemLen){
+    	return "You can select only "+itemLen+" tags";
+    },
+    showMsgMaxReached: function(obj, itemLen,$ele ){
+    	var msg = obj.options.msgMaxReached(itemLen);
+    	var $msgHolder = obj.options.msgHolder.clone();
+    	var classToAdd = $ele.attr("name")+"-tags-error";
+    	$("."+classToAdd).remove();
+    	$msgHolder.addClass(classToAdd);
+    	$msgHolder.html(msg).removeClass("hide");
+    	$msgHolder.insertAfter($ele.next()).fadeOut(2000);
+    },
+    msgHolder:$('<div class="error1 hide">'+'</div>')
   };
 
   /**
@@ -60,6 +73,7 @@
       var self = this;
 
       if (self.options.maxTags && self.itemsArray.length >= self.options.maxTags)
+        this.options['showMsgMaxReached'].call(undefined,this,self.itemsArray.length,self.$element);
         return;
 
       // Ignore falsey values, except false
