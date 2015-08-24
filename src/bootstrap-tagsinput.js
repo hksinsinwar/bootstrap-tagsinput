@@ -27,6 +27,7 @@
     msgMaxReached:function(itemLen){
     	return "You can select only "+itemLen+" tags";
     },
+    clearInputAfterSelection:false,
     showMsgMaxReached: function(obj, itemLen,$ele ){
     	var msg = obj.options.msgMaxReached(itemLen);
     	var $msgHolder = obj.options.msgHolder.clone();
@@ -371,7 +372,13 @@
               }
           }, self));
         }
+		// Hack for clear the input text after selection
+		if (self.options.clearInputAfterSelection) {
+			self.$input.on('focusout', function(ev) {
 
+				self.$input.val('');
+			});
+		}
 
       self.$container.on('keydown', 'input', $.proxy(function(event) {
         var $input = $(event.target),
